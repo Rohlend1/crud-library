@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>People</title>
+    <style>
+        .font{
+            font-size: 14px;
+            font-family: "Trebuchet MS",sans-serif;
+        }
+    </style>
+</head>
+<body>
+<div th:each="person :${people}">
+    <a style="font-weight: bold" class="font" th:href="@{/people/{id}(id=${person.getPersonId()})}" th:text="${person.fullName +', '+person.yearOfBirth}"></a>
+</div>
+<hr/>
+<a style="font-weight: bold" class="font" th:href="@{people/new}">Add new person</a>
+</body>
+</html>

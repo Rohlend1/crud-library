@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Editing...</title>
+  <style>
+    /* Стили для кнопок */
+    .button {
+      border: none;
+      padding: 8px 12px;
+      background-color: #FFFFFF;
+      color: #4B4B4B;
+      border-radius: 8px;
+      font-size: 14px;
+      cursor: pointer;
+      margin-bottom: 4px;
+      box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    }
+    .button:active {
+      box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
+      transform: scale(0.98);
+    }
+    /* Стили для кнопки "Edit" */
+    .font{
+      font-size: 14px;
+      font-family: "Trebuchet MS",sans-serif;
+    }
+  </style>
+</head>
+<body>
+<a style="font-weight: bold" class="font" th:text="${person.fullName + ' '+person.yearOfBirth}"></a>
+<form th:method="PATCH" th:action="@{/people/{id}/edit(id=${person.getPersonId()})}" th:object="${person}">
+  <label style="font-weight: bold" class="font" for="fullName">Enter new full name</label>
+  <input type="text" th:field="*{fullName}" id="fullName"/>
+  <br/>
+  <label style="font-weight: bold" class="font" for="yearOfBirth">Enter new year of birth</label>
+  <input type="text" th:field="*{yearOfBirth}" id="yearOfBirth"/>
+  <br/>
+  <input class="button font" type="submit" value="Edit"/>
+</form>
+</body>
+</html>

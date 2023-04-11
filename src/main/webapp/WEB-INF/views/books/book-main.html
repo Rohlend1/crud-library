@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>People</title>
+    <style>
+        .font{
+            font-size: 14px;
+            font-weight: bold;
+            font-family: "Trebuchet MS",sans-serif;
+        }
+    </style>
+</head>
+<body>
+<div th:each="book :${books}">
+    <a class="font" th:href="@{/books/{id}(id=${book.getId()})}" th:text="${book.name +', '+book.year}"></a>
+</div>
+<hr/>
+<a class="font" th:href="@{books/new}">Add new book</a>
+</body>
+</html>
