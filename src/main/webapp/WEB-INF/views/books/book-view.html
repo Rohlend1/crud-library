@@ -29,7 +29,29 @@
     </style>
 </head>
 <body>
-<a style="font-weight: bold" class="font" th:text="${book.name +', '+ book.author +', '+book.year}"></a>
+<a style="font-weight: bolder" class="font" th:text="${book.name +', '+ book.author +', '+book.year}"></a>
+<br/>
+<a style="font-weight: 540" class="font" th:if="${person == null}">
+    This book is free. Who should it be assigned to?
+    <br/>
+    <form th:method="PATCH" th:action="@{/books/{id}/assign(id=${book.getId()})}">
+
+        <label for="book">Choose the person</label>
+        <select th:object="${book}" th:field="*{ownerId}" id="book">
+            <option th:each="human:${people}" th:value="${human.getPersonId()}" th:text="${human.getFullName()}">
+
+            </option>
+        </select>
+        <input class="font button" type="submit" value="assign"/>
+    </form>
+</a>
+<a style="font-weight: 540" class="font" th:if="${person != null}">
+    <a th:text="${person.fullName + ' has this book now'}"></a>
+    <br/>
+    <form th:method="PATCH" th:action="@{/books/{id}/free(id=${book.getId()})}">
+        <input class="button font" type="submit" value="Release"/>
+    </form>
+</a>
 <hr/>
 <form th:method="GET" th:action="@{/books/{id}/edit(id=${book.getId()})}" th:object="${book}">
     <input class="button font" type="submit" value="Edit"/>

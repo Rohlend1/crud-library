@@ -12,7 +12,8 @@
 </head>
 <body>
 <div th:each="person :${people}">
-    <a style="font-weight: bold" class="font" th:href="@{/people/{id}(id=${person.getPersonId()})}" th:text="${person.fullName +', '+person.yearOfBirth}"></a>
+    <a style="font-weight: bold" class="font" th:href="@{/people/{id}(id=${person.getPersonId()})}"
+       th:text="${person.getFullName() +', '+person.getYearOfBirth()}"></a>
 </div>
 <hr/>
 <a style="font-weight: bold" class="font" th:href="@{people/new}">Add new person</a>

@@ -1,12 +1,23 @@
 package ru.rohlend.spring.entities;
 
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.stereotype.Component;
 
 @Component
 public class Book {
     private int id;
+    @NotNull(message = "Name should not be null")
+    @NotEmpty(message = "Name should not be empty")
     private String name;
+
+    @NotNull(message = "Author's name should not be null")
+    @NotEmpty(message = "Author's name should not be empty")
     private String author;
+
+    @Max(value = 2023,message = "Year can't be more than now")
+    @NotNull(message = "Author's name should not be null")
     private int year;
 
     private int ownerId;

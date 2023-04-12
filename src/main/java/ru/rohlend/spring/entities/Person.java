@@ -1,11 +1,19 @@
 package ru.rohlend.spring.entities;
+import jakarta.validation.constraints.*;
 import org.springframework.stereotype.Component;
 
 
 @Component
 public class Person {
     private int personId;
+
+    @Max(value = 2023,message = "Year can't be bigger than it's possible")
+    @Min(value = 2023-150,message = "Year can't be less than it's possible")
     private int yearOfBirth;
+
+    @Size(min = 3, message = "Invalid name")
+    @NotNull(message = "Name should not be null")
+    @NotEmpty(message = "Name should not be empty")
     private String fullName;
 
     public Person(int personId, int yearOfBirth, String fullName) {

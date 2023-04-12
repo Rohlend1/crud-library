@@ -36,9 +36,14 @@
   <label style="font-weight: bold" class="font" for="author">Enter author's name</label>
   <input class="font" type="text" th:field="*{author}" id="author"/>
   <br/>
-  <label style="font-weight: bold" class="font" for="year">Enter new year of birth</label>
+  <label style="font-weight: bold" class="font" for="year">Enter new year</label>
   <input class="font" type="text" th:field="*{year}" id="year"/>
   <br/>
+  <div th:if="${errors}">
+    <ul>
+      <li style="color: red" th:each="error : ${errors}" th:text="${error.getDefaultMessage()}"></li>
+    </ul>
+  </div>
   <input class="button font" type="submit" value="Edit"/>
 </form>
 </body>

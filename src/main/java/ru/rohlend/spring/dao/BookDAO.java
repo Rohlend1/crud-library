@@ -4,7 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import ru.rohlend.spring.entities.Book;
+import ru.rohlend.spring.entities.Person;
 import ru.rohlend.spring.mappers.BookMapper;
+import ru.rohlend.spring.mappers.PersonMapper;
 
 
 import java.util.List;
@@ -37,5 +39,19 @@ public class BookDAO {
     }
     public void delete(int id){
         jdbcTemplate.update("delete from book where book_id = ?",id);
+    }
+
+    public Person getOwner(int id){
+        return jdbcTemplate.query("select * from person " +
+                        "where person_id = (select owner_id from book where book_id = ?)"
+                ,new PersonMapper(),id).stream().findAny().orElse(null);
+    }
+
+    public void assign(int id, Book book){
+        jdbcTemplate.update("update book set owner_id = ? where book_id = ?",book.getOwnerId(),id);
+    }
+
+    public void free(int id){
+        jdbcTemplate.update("update book set owner_id = null where book_id = ?",id);
     }
 }

@@ -29,7 +29,19 @@
 </head>
 <body>
 <a style="font-weight: bold" class="font" th:text="${person.getFullName() +', '+person.yearOfBirth}"></a>
+<br/>
+
+<a class="font" th:if="${#lists.isEmpty(books)}">
+    This person didn't take any book </a>
+
 <hr/>
+<a style="font-weight: bold" class="font" th:if="${not #lists.isEmpty(books)}">
+    Books:
+    <div th:if="${not #lists.isEmpty(books)}" th:each="book:${books}">
+        <a class="font" th:text="${book.name + ', '+book.author+', '+book.year}"></a>
+    </div>
+    <hr/>
+</a>
 <form th:method="GET" th:action="@{/people/{id}/edit(id=${person.getPersonId()})}" th:object="${person}">
     <input class="button font" type="submit" value="Edit"/>
 </form>

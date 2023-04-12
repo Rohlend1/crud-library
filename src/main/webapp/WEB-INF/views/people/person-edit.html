@@ -36,6 +36,11 @@
   <label style="font-weight: bold" class="font" for="yearOfBirth">Enter new year of birth</label>
   <input type="text" th:field="*{yearOfBirth}" id="yearOfBirth"/>
   <br/>
+  <div th:if="${errors}">
+    <ul>
+      <li style="color: red" th:each="error : ${errors}" th:text="${error.getDefaultMessage()}"></li>
+    </ul>
+  </div>
   <input class="button font" type="submit" value="Edit"/>
 </form>
 </body>

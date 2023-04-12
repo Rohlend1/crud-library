@@ -3,10 +3,13 @@ package ru.rohlend.spring.dao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
+import ru.rohlend.spring.entities.Book;
 import ru.rohlend.spring.entities.Person;
+import ru.rohlend.spring.mappers.BookMapper;
 import ru.rohlend.spring.mappers.PersonMapper;
 
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class PersonDAO {
@@ -36,6 +39,16 @@ public class PersonDAO {
     }
     public void delete(int id){
         jdbcTemplate.update("delete from person where person_id = ?",id);
+    }
+
+    public List<Book> getBooks(int id){
+        return jdbcTemplate.query("select * from book where owner_id = ?"
+                ,new BookMapper(),id);
+    }
+
+    public Optional<Person> find(String fullName,int id){
+        return jdbcTemplate.query("select * from person where full_name = ? and person_id != ?"
+                ,new PersonMapper(),fullName,id).stream().findAny();
     }
 
 }

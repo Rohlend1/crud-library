@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>People</title>
+    <title>Books</title>
     <style>
         .font{
             font-size: 14px;
@@ -13,7 +13,7 @@
 </head>
 <body>
 <div th:each="book :${books}">
-    <a class="font" th:href="@{/books/{id}(id=${book.getId()})}" th:text="${book.name +', '+book.year}"></a>
+    <a class="font" th:href="@{/books/{id}(id=${book.getId()})}" th:text="${book.name+', '+book.author +', '+book.year}"></a>
 </div>
 <hr/>
 <a class="font" th:href="@{books/new}">Add new book</a>
