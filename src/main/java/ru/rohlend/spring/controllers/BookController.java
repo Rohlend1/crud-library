@@ -7,48 +7,55 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import ru.rohlend.spring.dao.BookDAO;
-import ru.rohlend.spring.dao.PersonDAO;
+
 import ru.rohlend.spring.entities.Book;
+import ru.rohlend.spring.entities.Person;
+import ru.rohlend.spring.services.BookService;
+import ru.rohlend.spring.services.PeopleService;
 
 @Controller
 @ComponentScan("ru.rohlend.spring")
 @RequestMapping("/books")
 public class BookController {
 
-    private final BookDAO bookDAO;
-    private final PersonDAO personDAO;
+    private final BookService bookService;
+
+    private final PeopleService peopleService;
 
 
     @Autowired
-    public BookController(BookDAO bookDAO, PersonDAO personDAO) {
-        this.bookDAO = bookDAO;
-        this.personDAO = personDAO;
+    public BookController(BookService bookService, PeopleService peopleService) {
+        this.bookService = bookService;
+        this.peopleService = peopleService;
+
     }
 
     @GetMapping()
     public String mainPage(Model model){
-        model.addAttribute("books",bookDAO.getAllBooks());
+        model.addAttribute("books",bookService.findAll());
         return "books/book-main";
     }
 
     @GetMapping("/{id}")
     public String viewPerson(@PathVariable("id")int id, Model model){
-        model.addAttribute("book",bookDAO.get(id));
-        model.addAttribute("person",bookDAO.getOwner(id));
-        model.addAttribute("people",personDAO.getAllPeople());
+        Book book = bookService.findById(id);
+        model.addAttribute("book",book);
+        model.addAttribute("person",book.getOwner());
+        model.addAttribute("people",peopleService.findAll());
         return "books/book-view";
     }
 
     @PatchMapping("/{id}/assign")
     public String getAssigned(@PathVariable("id")int bookId,@ModelAttribute("book")Book book){
-        bookDAO.assign(bookId,book);
+        book.setOwner(peopleService.findById(Integer.parseInt(book.getOwnerName())));
+        System.out.println(book.getOwnerName());
+        bookService.assign(book,bookId);
         return "redirect:/books/{id}";
     }
 
     @PatchMapping("/{id}/free")
     public String freeTheBook(@PathVariable("id")int id){
-        bookDAO.free(id);
+        bookService.free(bookService.findById(id));
         return "redirect:/books/{id}";
     }
 
@@ -58,10 +65,11 @@ public class BookController {
             model.addAttribute("errors",bindingResult.getAllErrors());
             return "books/book-new";
         }
-        else {
-            bookDAO.create(book);
-            return "redirect:/books";
-        }
+        System.out.println("pre-save");
+        bookService.save(book);
+        System.out.println("post-save");
+        return "redirect:/books";
+
     }
     @GetMapping("/new")
     public String view(@ModelAttribute("book")Book book){
@@ -70,13 +78,13 @@ public class BookController {
 
     @GetMapping("/{id}/edit")
     public String getEdit(@PathVariable("id")int id,Model model){
-        model.addAttribute("book",bookDAO.get(id));
+        model.addAttribute("book",bookService.findById(id));
         return "books/book-edit";
     }
 
     @PatchMapping("/{id}/edit")
     public String edit(@PathVariable("id")int id,@ModelAttribute("book") @Valid Book book,BindingResult bindingResult,Model model){
-        Book originBook = bookDAO.get(id);
+        Book originBook = bookService.findById(id);
         if(originBook==null){
             return "books/book-edit";
         }
@@ -85,12 +93,12 @@ public class BookController {
             model.addAttribute("errors",bindingResult.getAllErrors());
             return "books/book-edit";
         }
-        bookDAO.edit(book, id);
+        bookService.edit(id,book);
         return "redirect:/books";
     }
     @DeleteMapping("/{id}")
     public String delete(@PathVariable("id")int id){
-        bookDAO.delete(id);
+        bookService.delete(id);
         return "redirect:/books";
     }
 }

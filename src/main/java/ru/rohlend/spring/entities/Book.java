@@ -1,41 +1,60 @@
 package ru.rohlend.spring.entities;
 
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
-import org.springframework.stereotype.Component;
 
-@Component
+
+@Entity
+@Table(name = "book")
 public class Book {
+    @Id
+    @Column(name = "book_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @NotNull(message = "Name should not be null")
     @NotEmpty(message = "Name should not be empty")
+    @Column(name = "name")
     private String name;
 
     @NotNull(message = "Author's name should not be null")
     @NotEmpty(message = "Author's name should not be empty")
+    @Column(name = "author")
     private String author;
 
     @Max(value = 2023,message = "Year can't be more than now")
     @NotNull(message = "Author's name should not be null")
+    @Column(name = "year")
     private int year;
 
-    private int ownerId;
+    @ManyToOne
+    @JoinColumn(name = "owner_id",referencedColumnName = "person_id")
+    private Person owner;
 
+    @Transient
+    private String ownerName;
 
-    public Book(int id, String name, String author, int year) {
-        this.id = id;
+    public String getOwnerName() {
+        return ownerName;
+    }
+
+    public void setOwnerName(String ownerName) {
+        this.ownerName = ownerName;
+    }
+
+    public Book(String name, String author, int year) {
         this.name = name;
         this.author = author;
         this.year = year;
     }
 
-    public int getOwnerId() {
-        return ownerId;
+    public Person getOwner() {
+        return owner;
     }
 
-    public void setOwnerId(int ownerId) {
-        this.ownerId = ownerId;
+    public void setOwner(Person owner) {
+        this.owner = owner;
     }
 
     public int getId() {
@@ -71,5 +90,16 @@ public class Book {
     }
 
     public Book() {
+    }
+
+    @Override
+    public String toString() {
+        return "Book{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", author='" + author + '\'' +
+                ", year=" + year +
+                ", owner=" + owner +
+                '}';
     }
 }

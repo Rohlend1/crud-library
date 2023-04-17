@@ -37,9 +37,8 @@
     <form th:method="PATCH" th:action="@{/books/{id}/assign(id=${book.getId()})}">
 
         <label for="book">Choose the person</label>
-        <select th:object="${book}" th:field="*{ownerId}" id="book">
-            <option th:each="human:${people}" th:value="${human.getPersonId()}" th:text="${human.getFullName()}">
-
+        <select th:object="${book}" th:field="*{ownerName}" id="book">
+            <option th:each="human:${people}" th:value="${human.getPersonId}" th:text="${human.fullName}">
             </option>
         </select>
         <input class="font button" type="submit" value="assign"/>

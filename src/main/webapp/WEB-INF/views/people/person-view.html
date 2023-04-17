@@ -28,12 +28,11 @@
     </style>
 </head>
 <body>
-<a style="font-weight: bold" class="font" th:text="${person.getFullName() +', '+person.yearOfBirth}"></a>
+<a style="font-weight: bold" class="font" th:text="${person.fullName +', '+person.yearOfBirth}"></a>
 <br/>
 
 <a class="font" th:if="${#lists.isEmpty(books)}">
     This person didn't take any book </a>
-
 <hr/>
 <a style="font-weight: bold" class="font" th:if="${not #lists.isEmpty(books)}">
     Books:
@@ -42,10 +41,10 @@
     </div>
     <hr/>
 </a>
-<form th:method="GET" th:action="@{/people/{id}/edit(id=${person.getPersonId()})}" th:object="${person}">
+<form th:method="GET" th:action="@{/people/{id}/edit(id=${person.personId})}" th:object="${person}">
     <input class="button font" type="submit" value="Edit"/>
 </form>
-<form th:method="DELETE" th:action="@{/people/{id}(id=${person.getPersonId()})}">
+<form th:method="DELETE" th:action="@{/people/{id}(id=${person.personId})}" th:object="${person}">
     <input class="button font" type="submit" value="Delete"/>
 </form>
 </body>
