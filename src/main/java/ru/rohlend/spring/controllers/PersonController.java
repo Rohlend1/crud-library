@@ -33,8 +33,7 @@ public class PersonController {
 
     @GetMapping("/{id}")
     public String viewPerson(@PathVariable("id")int id,Model model){
-        Person person = peopleService.findById(id);
-        System.out.println(person.getBooks());
+        Person person = peopleService.findByIdWithBooks(id);
         model.addAttribute("person",person);
         model.addAttribute("books",person.getBooks());
         return "people/person-view";

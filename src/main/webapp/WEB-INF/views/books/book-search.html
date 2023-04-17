@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Search Books</title>
+    <style>
+        /* Стили для кнопок */
+        .button {
+            border: none;
+            padding: 8px 12px;
+            background-color: #FFFFFF;
+            color: #4B4B4B;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            margin-bottom: 4px;
+            box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        .button:active {
+            box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
+            transform: scale(0.98);
+        }
+        /* Стили для поля ввода */
+        .input {
+            font-size: 14px;
+            font-family: "Trebuchet MS",sans-serif;
+            padding: 4px 8px;
+            border-radius: 8px;
+            border: 1px solid #CCC;
+            margin-bottom: 4px;
+            box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+    </style>
+</head>
+<body>
+<h1>Search Books</h1>
+<form method="GET" th:action="@{/books/search}">
+    <label>Enter book's name:
+        <input class="input" type="text" name="found"/>
+    </label>
+    <br/>
+    <input class="button" type="submit" value="Search"/>
+</form>
+<hr>
+<h2 th:if="${found != null}">Results:</h2>
+<div th:each="book : ${found}" th:if="${found.size()!=0}">
+    <div th:if="${book.owner != null}">
+        <p th:text="${book.name}+', '+ ${book.author} + ', ' + ${book.year}"></p>
+        <p th:text="${book.owner.fullName}+' has this book now'"></p>
+    </div>
+    <div th:if="${book.owner == null}">
+        <p th:text="${book.name + ', ' +book.author + ', ' + book.year}"></p>
+        <br/>
+        <p>This book is free now</p>
+    </div>
+    <hr>
+</div>
+<p th:if="${found.size()==0}">No results found.</p>
+</body>
+</html>

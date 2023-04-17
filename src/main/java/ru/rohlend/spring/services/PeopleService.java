@@ -1,9 +1,9 @@
 package ru.rohlend.spring.services;
 
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.rohlend.spring.entities.Book;
 import ru.rohlend.spring.entities.Person;
 import ru.rohlend.spring.repositories.PeopleRepository;
 
@@ -46,6 +46,12 @@ public class PeopleService {
 
     public List<Person> findByFullNameAndPersonIdNot(String fullName,int id){
         return peopleRepository.findByFullNameAndPersonIdNot(fullName,id);
+    }
+
+    public Person findByIdWithBooks(int id){
+        Person person = findById(id);
+        Hibernate.initialize(person.getBooks());
+        return person;
     }
 
 }

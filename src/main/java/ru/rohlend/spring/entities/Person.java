@@ -1,7 +1,6 @@
 package ru.rohlend.spring.entities;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 
@@ -25,7 +24,7 @@ public class Person {
     @Column(name = "full_name")
     private String fullName;
 
-    @OneToMany(mappedBy = "owner",fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "owner")
     private List<Book> books;
 
     public Person(int yearOfBirth, String fullName) {

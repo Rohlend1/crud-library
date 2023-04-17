@@ -30,7 +30,6 @@ public class BookController {
         this.peopleService = peopleService;
 
     }
-
     @GetMapping()
     public String mainPage(Model model,
                @RequestParam(name = "sort_by_year",required = false)boolean sort,
@@ -47,6 +46,15 @@ public class BookController {
         model.addAttribute("books",books);
         return "books/book-main";
     }
+
+    @GetMapping("/search")
+    public String searchingPage(Model model,@RequestParam(name = "found",required = false)String startsWith){
+        if(startsWith != null) model.addAttribute("found",bookService.findByNameStartingWith(startsWith));
+        else model.addAttribute("found",null);
+        model.addAttribute("books",bookService.findAll());
+        return "books/book-search";
+    }
+
 
     @GetMapping("/{id}")
     public String viewPerson(@PathVariable("id")int id, Model model){

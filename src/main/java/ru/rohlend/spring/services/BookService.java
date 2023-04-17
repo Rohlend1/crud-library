@@ -71,4 +71,8 @@ public class BookService {
         books.sort(Comparator.comparingInt(Book::getYear));
         return books;
     }
+
+    public List<Book> findByNameStartingWith(String name){
+        return bookRepository.findByNameStartingWith(name);
+    }
 }
