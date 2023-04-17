@@ -9,9 +9,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import ru.rohlend.spring.entities.Book;
-import ru.rohlend.spring.entities.Person;
 import ru.rohlend.spring.services.BookService;
 import ru.rohlend.spring.services.PeopleService;
+
+import java.util.List;
 
 @Controller
 @ComponentScan("ru.rohlend.spring")
@@ -31,8 +32,19 @@ public class BookController {
     }
 
     @GetMapping()
-    public String mainPage(Model model){
-        model.addAttribute("books",bookService.findAll());
+    public String mainPage(Model model,
+               @RequestParam(name = "sort_by_year",required = false)boolean sort,
+               @RequestParam(name="page",required = false)Integer page,
+               @RequestParam(name = "books_per_page",required = false)Integer booksPerPage){
+        List<Book> books;
+        if(sort && (page == null || booksPerPage == null)){
+            books = bookService.findAllSortByYear();
+        }
+        else if(page == null || booksPerPage == null) books = bookService.findAll();
+        else{
+           books = bookService.pagination(page,booksPerPage,sort);
+        }
+        model.addAttribute("books",books);
         return "books/book-main";
     }
 

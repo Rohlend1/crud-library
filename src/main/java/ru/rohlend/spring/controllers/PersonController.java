@@ -16,11 +16,8 @@ import ru.rohlend.spring.util.PersonValidator;
 @RequestMapping("/people")
 public class PersonController {
 
-
-
     private final PeopleService peopleService;
     private final PersonValidator personValidator;
-
 
     @Autowired
     public PersonController(PeopleService peopleService, PersonValidator personValidator) {
@@ -63,14 +60,12 @@ public class PersonController {
         model.addAttribute("person",peopleService.findById(id));
         return "people/person-edit";
     }
-
     @PatchMapping("/{id}/edit")
     public String edit(@PathVariable("id")int id,@ModelAttribute("person") @Valid Person person,
                        BindingResult bindingResult,Model model){
         Person originPerson = peopleService.findById(id);
         personValidator.validate(person,bindingResult);
         if(originPerson == null) return "people/person-edit";
-
         if(bindingResult.hasErrors()){
             model.addAttribute("person",originPerson);
             model.addAttribute("errors",bindingResult.getAllErrors());
